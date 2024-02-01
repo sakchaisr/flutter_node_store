@@ -119,6 +119,7 @@ class LoginForm extends StatelessWidget {
               InkWell(
                 onTap: () {
                   //Open Sign up screen here
+                  // Navigator.pushNamed(context, AppRouter.register);
                   Navigator.pushReplacementNamed(context, AppRouter.register);
                 },
                 child: const Text(

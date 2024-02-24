@@ -1,10 +1,14 @@
-// ignore_for_file: unused_field, must_be_immutable
+// ignore_for_file: unused_field, must_be_immutable, use_build_context_synchronously
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/custom_textfield.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
 import 'package:flutter_node_store/components/social_media_options.dart';
+import 'package:flutter_node_store/services/rest_api.dart';
+import 'package:flutter_node_store/utils/utility.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -90,7 +94,7 @@ class LoginForm extends StatelessWidget {
                 ),
                 RoundedButton(
                     label: "LOGIN",
-                    onPressed: () {
+                    onPressed: () async {
 
                       // ตรวจสอบข้อมูลฟอร์ม
                       if (_formKeyLogin.currentState!.validate()) {
@@ -99,8 +103,44 @@ class LoginForm extends StatelessWidget {
                         _formKeyLogin.currentState!.save();
                         
                         // แสดงข้อมูลที่บันทึกใน Console
-                        print("Email: ${_emailController.text}");
-                        print("Password: ${_passwordController.text}");
+                        // print("Email: ${_emailController.text}");
+                        // print("Password: ${_passwordController.text}");
+
+                        // ส่งข้อมูลไปยัง API เพื่อทำการตรวจสอบ
+                        var response = await CallAPI().loginAPI(
+                          {
+                            "email": _emailController.text,
+                            "password": _passwordController.text
+                          }
+                        );
+
+                        // ตรวจสอบค่าที่ได้จาก API
+                        var body = jsonDecode(response);
+
+                        Utility().logger.i(body);
+
+                        if (body["message"] == "No Network Connection") {
+                          // แจ้งเตือนว่าไม่มีการเชื่อมต่อ Internet
+                          Utility.showAlertDialog(context, '', '${body["message"]}');
+                        } else {
+                          if (body["status"] == "ok") { 
+                            // แจ้งเตือนว่าเข้าสู่ระบบสำเร็จ
+                            Utility.showAlertDialog(context, body["status"], '${body["message"]}');
+
+                            // บันทึกข้อมูลลงในตัวแปร SharedPreferences
+                            await Utility.setSharedPreference('loginStatus', true);
+                            await Utility.setSharedPreference('token', body["token"]);
+                            await Utility.setSharedPreference('user', body["user"]);
+
+                            // ส่งไปหน้า Dashboard
+                            Navigator.pushNamed(context, AppRouter.dashboard);
+
+                          }else{
+                            // แจ้งเตือนว่าเข้าสู่ระบบไม่สำเร็จ
+                            Utility.showAlertDialog(context, body["status"], '${body["message"]}');
+                          }
+                        }
+
                       }
 
                     })

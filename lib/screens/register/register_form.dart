@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/components/custom_textfield.dart';
 import 'package:flutter_node_store/components/rounded_button.dart';
-import 'package:flutter_node_store/main.dart';
 import 'package:flutter_node_store/services/rest_api.dart';
 import 'package:flutter_node_store/utils/utility.dart';
 
@@ -148,7 +147,7 @@ class RegisterForm extends StatelessWidget {
                       
                       var body = jsonDecode(response);
                       
-                      logger.i(body);
+                      Utility().logger.i(body);
 
                       if(body['message'] == 'No Network Connection'){
                         // แจ้งเตือนว่าไม่มีการเชื่อมต่อ Internet

@@ -4,18 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/themes/styles.dart';
 import 'package:flutter_node_store/utils/utility.dart';
-// import 'package:flutter_node_store/utils/utility.dart';
-
-// import 'package:shared_preferences/shared_preferences.dart';
-
-
 
 // กำหนดตัวแปร initialRoute ให้กับ MaterialApp
 var initialRoute;
 
-void main() async{
+void main() async {
 
-  //Test Logger
+  // Test Logger
   // Utility().testLogger();
 
   // ต้องเรียกใช้ WidgetsFlutterBinding.ensureInitialized()
@@ -25,7 +20,7 @@ void main() async{
   // เรียกใช้ SharedPreferences
   await Utility.initSharedPrefs();
 
-   // ถ้าเคย Login แล้ว ให้ไปยังหน้า Dashboard
+  // ถ้าเคย Login แล้ว ให้ไปยังหน้า Dashboard
   if(Utility.getSharedPreference('loginStatus') == true){
     initialRoute = AppRouter.dashboard;
   } else if(Utility.getSharedPreference('welcomeStatus') == true) {

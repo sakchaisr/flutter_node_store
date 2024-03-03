@@ -17,8 +17,8 @@ class LoginForm extends StatelessWidget {
   final _formKeyLogin = GlobalKey<FormState>();
 
   // สร้าง TextEditingController
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'samit@email.com');
+  final _passwordController = TextEditingController(text: '123456');
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +53,6 @@ class LoginForm extends StatelessWidget {
                     }
                     return null;
                   },
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 const SizedBox(
                   height: 10,
@@ -123,7 +120,8 @@ class LoginForm extends StatelessWidget {
                           // แจ้งเตือนว่าไม่มีการเชื่อมต่อ Internet
                           Utility.showAlertDialog(context, '', '${body["message"]}');
                         } else {
-                          if (body["status"] == "ok") { 
+                          if (body["status"] == "ok") {
+                            
                             // แจ้งเตือนว่าเข้าสู่ระบบสำเร็จ
                             Utility.showAlertDialog(context, body["status"], '${body["message"]}');
 
@@ -133,7 +131,7 @@ class LoginForm extends StatelessWidget {
                             await Utility.setSharedPreference('user', body["user"]);
 
                             // ส่งไปหน้า Dashboard
-                            Navigator.pushNamed(context, AppRouter.dashboard);
+                            Navigator.pushReplacementNamed(context, AppRouter.dashboard);
 
                           }else{
                             // แจ้งเตือนว่าเข้าสู่ระบบไม่สำเร็จ
@@ -159,7 +157,6 @@ class LoginForm extends StatelessWidget {
               InkWell(
                 onTap: () {
                   //Open Sign up screen here
-                  // Navigator.pushNamed(context, AppRouter.register);
                   Navigator.pushReplacementNamed(context, AppRouter.register);
                 },
                 child: const Text(

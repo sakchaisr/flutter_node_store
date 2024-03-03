@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -134,9 +133,8 @@ class RegisterForm extends StatelessWidget {
                       // print("Email: ${_emailController.text}");
                       // print("Password: ${_passwordController.text}");
 
-                      // เรียกใช้งาน API สำหรับลงทะเบียน Register
+                      // เรียกใข้งาน API Register
                       var response = await CallAPI().registerAPI(
-                        // ส่ง payload register
                         {
                           "firstname": _firstNameController.text,
                           "lastname": _lastNameController.text,
@@ -144,9 +142,9 @@ class RegisterForm extends StatelessWidget {
                           "password": _passwordController.text
                         }
                       );
-                      
+
                       var body = jsonDecode(response);
-                      
+
                       Utility().logger.i(body);
 
                       if(body['message'] == 'No Network Connection'){
@@ -175,6 +173,7 @@ class RegisterForm extends StatelessWidget {
                           );
                         }
                       }
+                      
                     }
                   },
                 ),
